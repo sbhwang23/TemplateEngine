@@ -9,9 +9,12 @@ const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
+const Employee = require("./lib/Employee");
 
+let manager;
+let employee = [];
 
-function managerPrompt() {
+const managerPrompt = async function() {
     return inquirer
     .prompt([
     {
@@ -28,11 +31,22 @@ function managerPrompt() {
         type: 'input',
         name: 'email',
         message: 'Please enter the manager\'s email address.'
-    }
+    },
+    {
+        type: 'input',
+        name: 'officeNumber',
+        message: 'Please enter the manager\'s office number.'
+    },
+    {
+        type: 'input',
+        name: 'numOfEmployees',
+        message: 'How many employees would you like to add?'
+    },
+
     ])
 } 
-
-function employeePrompt() {
+    
+const employeePrompt = async function() {
     return inquirer
     .prompt([
     {
@@ -49,7 +63,7 @@ function employeePrompt() {
         type: 'input',
         name: 'email',
         message: 'Please enter the employee\'s email address.'
-    }
+    },
     {
         type: 'list',
         name: 'role',
@@ -62,7 +76,7 @@ function employeePrompt() {
     {
         type: 'input',
         name: 'github',
-        message: 'Please enter the engineer\'s username.'
+        message: 'Please enter the engineer\'s Github username.'
     },
     {
         type: 'input',
@@ -72,7 +86,28 @@ function employeePrompt() {
     ])
 } 
 
+async function init() {
+    await managerPrompt().then(function(answers){
+        // console.log(answers)
+        manager = new Manager(answers.name, answers.id, answers.email, answers.officeNumber)
+        
+        for (let i = 0; i < parseInt(answers.numOfEmployees); i++){
+            employeePrompt().then(function(answers){
+                if (answers.role === 'Engineer') {
+                    employee.push(new Engineer(answers.name, answers.id, answers.email, answers.github))
+                } else {
+                    employee.push(new Intern(answers.name, answers.id, answers.email, answers.school))
+                }
+        
+            }) 
+        }
+    });
+}
 
+   init();
+
+    console.log('manager: ', manager);
+    console.log('employee: ', employee);
 // Write code to use inquirer to gather information about the development team members,
 
 // and to create objects for each team member (using the correct classes as blueprints!)
