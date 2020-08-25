@@ -12,8 +12,7 @@
   7. [Contact Information](#Questions)
 
   ## About
-  This is a team generator command line applicaiton.
-  ![link]<iframe src="https://drive.google.com/file/d/1w2M7JOCWTQlyAjcB40npwQfalfH6DcxM/preview" width="640" height="480"></iframe>
+  This is a team generator command line application.
 
   ## Installing
   Please install Node.js and install the packages needed using npm install in the command-line. 
