@@ -26,8 +26,3 @@
 
   ## Tests
   In the command-line, type npm run test to run the jest unit tests. 
-
-  ## Questions
-  Github: sbhwang23 
-
-  Reach out to  with additional questions.
