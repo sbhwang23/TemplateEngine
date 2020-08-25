@@ -13,7 +13,7 @@
 
   ## About
   This is a team generator command line application.
-  ![Link to demo](<iframe src="https://drive.google.com/file/d/1w2M7JOCWTQlyAjcB40npwQfalfH6DcxM/preview" width="640" height="480"></iframe>)
+  [Link to demo](<iframe src="https://drive.google.com/file/d/1w2M7JOCWTQlyAjcB40npwQfalfH6DcxM/preview" width="640" height="480"></iframe>)
 
   ## Installing
   Please install Node.js and install the packages needed using npm install in the command-line. 
