@@ -7,10 +7,10 @@ const fs = require("fs");
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
-let manager;
-let employee = [];
 
-const managerPrompt = async function() {
+let employees = [];
+
+const managerPrompt = async () => {
     return inquirer
     .prompt([
     {
@@ -39,8 +39,9 @@ const managerPrompt = async function() {
         message: 'How many employees would you like to add?'
     },
     ])
-} 
-const employeePrompt = async function() {
+};
+
+const employeesPrompt = async () => {
     return inquirer
     .prompt([
     {
@@ -80,22 +81,44 @@ const employeePrompt = async function() {
         when: function(answers) { return (answers.role === 'Intern'); }
     },
     ])
-} 
+}; 
 
 async function init() {
     const managerAnswers = await managerPrompt();
-    let employeeAnswers;
+    let employeesAnswers;
    
-    manager = new Manager(managerAnswers.name, managerAnswers.id, managerAnswers.email, managerAnswers.officeNumber);
+    manager = employees.push(new Manager(managerAnswers.name, managerAnswers.id, managerAnswers.email, managerAnswers.officeNumber));
+   
     for (let i = 0; i < parseInt(managerAnswers.numOfEmployees); i++){
-        employeeAnswers = await employeePrompt();
-        if (employeeAnswers.role === 'Engineer') {
-            employee.push(new Engineer(employeeAnswers.name, employeeAnswers.id, employeeAnswers.email, employeeAnswers.github))
+        employeesAnswers = await employeesPrompt();
+        if (employeesAnswers.role === 'Engineer') {
+            employees.push(new Engineer(employeesAnswers.name, employeesAnswers.id, employeesAnswers.email, employeesAnswers.github));
         } else {
-            employee.push(new Intern(employeeAnswers.name, employeeAnswers.id, employeeAnswers.email, employeeAnswers.school))
+            employees.push(new Intern(employeesAnswers.name, employeesAnswers.id, employeesAnswers.email, employeesAnswers.school));
         }
     }
     console.log('manager: ', manager);
-    console.log('employee: ', employee);
+    console.log('employee: ', employees);
+};
+
+
+function writeHTML(data) {
+    fs.writeFile( outputPath, data, 
+        (err) => {
+            if(err) throw err;
+        }
+)};
+
+
+async function renderPage() {
+    try {
+        await init();
+        const html = render(employees);
+        writeHTML(html);
+    }
+    catch(err) {
+        console.log('error')
+    }
 }
-init();
+
+renderPage();
